@@ -7,17 +7,19 @@ import java.util.Optional;
 import java.util.WeakHashMap;
 
 /**
- * Created by Korovin Anatolii on 14.06.2018.
+ * Created on 14.06.2018.
  *
- * @author Korovin Anatolii
- * @version 1.0
+ * @author Korovin Anatoliy
  */
 public class XMutexFactory<KeyT> {
 
     public final Map<XMutex<KeyT>, WeakReference<XMutex<KeyT>>> weakHashMap =
             Collections.synchronizedMap(new WeakHashMap<XMutex<KeyT>, WeakReference<XMutex<KeyT>>>());
 
-
+    /**
+     * Creates and returns a mutex by the key.
+     * If the mutex for this key already exists in the weak-map, then returns the same reference of the mutex.
+     */
     public XMutex<KeyT> getMutex(KeyT key) {
         synchronized (weakHashMap) {
             validateKey(key);
@@ -48,6 +50,9 @@ public class XMutexFactory<KeyT> {
         return mutex;
     }
 
+    /**
+     * @return count of mutexes in this factory.
+     */
     public long size() {
         return weakHashMap.size();
     }

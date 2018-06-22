@@ -9,21 +9,34 @@
 	<packaging>jar</packaging>
 
 	<name>xsync</name>
-	<description>Custom synchronization tools</description>
+	<description>Tools for the synchronization on the instance of key.</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
 		<java.version>1.8</java.version>
+		<lombok.version>1.16.22</lombok.version>
 	</properties>
 
-	<dependencies>
+	<developers>
+		<developer>
+			<id>antkorwin</id>
+			<name>Anatoliy Korovin</name>
+			<email>antkorwin@gmail.com</email>
+			<url>antkorwin.com</url>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
 
+	<dependencies>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.16.20</version>
+			<version>${lombok.version}</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>

@@ -57,10 +57,8 @@ public class XSyncConfig {
 ## Use it
 
 ```java
-
 @Autowired
 private XSync<String> xSync;
-
 
 @Test
 public void testLock() throws InterruptedException {

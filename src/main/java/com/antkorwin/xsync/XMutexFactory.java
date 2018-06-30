@@ -18,7 +18,8 @@ public class XMutexFactory<KeyT> {
 
     /**
      * Creates and returns a mutex by the key.
-     * If the mutex for this key already exists in the weak-map, then returns the same reference of the mutex.
+     * If the mutex for this key already exists in the weak-map,
+     * then returns the same reference of the mutex.
      */
     public XMutex<KeyT> getMutex(KeyT key) {
         synchronized (weakHashMap) {

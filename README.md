@@ -3,13 +3,12 @@
 
 ## What is it
 
-![XSync mutex behavior](http://antkorwin.com/concurrency/diag-0672834a7737bb323990aabe3bcb5ce6.png)
-
 XSync is a thread-safe mutex factory, that provide 
 ability to synchronize by the value of the object(not by the object).
 
 And you can use it for all type of object which you need.
 
+![XSync mutex behavior](http://antkorwin.com/concurrency/diag-0672834a7737bb323990aabe3bcb5ce6.png)
 
 You can read more about this library here: 
 [Synchronization by the instance of the class](http://antkorwin.com/concurrency/synchronization_by_instance.html) 

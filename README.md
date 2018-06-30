@@ -66,8 +66,6 @@ private XSync<String> xSync;
 public void testLock() throws InterruptedException {
     // Arrange
     NonAtomicInt variable = new NonAtomicInt(0);
-    XSync<String> xSync = new XSync<>();
-
     ExecutorService executorService = Executors.newFixedThreadPool(10);
 
     // Act

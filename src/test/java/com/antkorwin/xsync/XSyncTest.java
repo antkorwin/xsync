@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.equalTo;
  */
 public class XSyncTest {
 
-    public static final int TIMEOUT_FOR_PREVENTION_OF_DEADLOCK = 30000;
+    private static final int TIMEOUT_FOR_PREVENTION_OF_DEADLOCK = 30000;
     private static final int THREAD_CNT = 10000000;
 
     @Test(timeout = TIMEOUT_FOR_PREVENTION_OF_DEADLOCK)
@@ -58,7 +58,7 @@ public class XSyncTest {
                  .forEach(j -> xsync.execute(UUID.fromString(id), var::increment));
 
         // Asserts
-        await().atMost(5, TimeUnit.SECONDS)
+        await().atMost(15, TimeUnit.SECONDS)
                .until(var::getValue, equalTo(THREAD_CNT));
 
         Assertions.assertThat(var.getValue()).isEqualTo(THREAD_CNT);
@@ -77,21 +77,21 @@ public class XSyncTest {
             System.out.println("firstThread started.");
             xSync.execute(new String("key"), () -> {
                 System.out.println("firstThread took a lock");
-                sleep(2);
+                TestUtils.sleep(2);
                 variable.increment();
                 System.out.println("firstThread released a look");
             });
         });
 
         executorService.submit(() -> {
-            sleep(1);
+            TestUtils.sleep(1);
             System.out.println("secondThread started.");
             xSync.execute(new String("key"), () -> {
                 System.out.println("secondThread took a lock");
 
                 // Assert
                 Assertions.assertThat(variable.getValue()).isEqualTo(1);
-                sleep(1);
+                TestUtils.sleep(1);
                 variable.increment();
                 System.out.println("secondThread released a look");
             });
@@ -101,14 +101,6 @@ public class XSyncTest {
 
         // Assert
         Assertions.assertThat(variable.getValue()).isEqualTo(2);
-    }
-
-    private void sleep(int seconds) {
-        try {
-            Thread.sleep(seconds * 1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Getter

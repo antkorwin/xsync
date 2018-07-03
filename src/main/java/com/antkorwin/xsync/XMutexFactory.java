@@ -1,10 +1,9 @@
 package com.antkorwin.xsync;
 
-import java.lang.ref.WeakReference;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-import java.util.WeakHashMap;
+
+import com.antkorwin.xsync.springframework.util.ConcurrentReferenceHashMap;
+
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Created on 14.06.2018.
@@ -13,8 +12,38 @@ import java.util.WeakHashMap;
  */
 public class XMutexFactory<KeyT> {
 
-    public final Map<XMutex<KeyT>, WeakReference<XMutex<KeyT>>> weakHashMap =
-            Collections.synchronizedMap(new WeakHashMap<XMutex<KeyT>, WeakReference<XMutex<KeyT>>>());
+    private static final int DEFAULT_INITIAL_CAPACITY = 16;
+    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
+    private static final int DEFAULT_CONCURRENCY_LEVEL = 16;
+    private static final ConcurrentReferenceHashMap.ReferenceType DEFAULT_REFERENCE_TYPE =
+            ConcurrentReferenceHashMap.ReferenceType.SOFT;
+
+    private final ConcurrentMap<KeyT, XMutex<KeyT>> map;
+
+    /**
+     * Create a mutex factory with default settings
+     */
+    public XMutexFactory() {
+        this.map = new ConcurrentReferenceHashMap<>(DEFAULT_INITIAL_CAPACITY,
+                                                    DEFAULT_LOAD_FACTOR,
+                                                    DEFAULT_CONCURRENCY_LEVEL,
+                                                    DEFAULT_REFERENCE_TYPE);
+    }
+
+    /**
+     * Creating a mutex factory with custom settings
+     *
+     * @param concurrencyLevel the expected number of threads
+     *                         that will concurrently write to the map
+     * @param referenceType    the reference type used for entries (soft or weak)
+     */
+    public XMutexFactory(int concurrencyLevel,
+                         ConcurrentReferenceHashMap.ReferenceType referenceType) {
+        this.map = new ConcurrentReferenceHashMap<>(DEFAULT_INITIAL_CAPACITY,
+                                                    DEFAULT_LOAD_FACTOR,
+                                                    concurrencyLevel,
+                                                    referenceType);
+    }
 
     /**
      * Creates and returns a mutex by the key.
@@ -22,39 +51,22 @@ public class XMutexFactory<KeyT> {
      * then returns the same reference of the mutex.
      */
     public XMutex<KeyT> getMutex(KeyT key) {
-        synchronized (weakHashMap) {
-            validateKey(key);
-            return getExist(key)
-                    .orElseGet(() -> saveNewReference(key));
-        }
-    }
-
-    private void validateKey(KeyT key) {
-        if (key == null) {
-            throw new IllegalArgumentException("The KEY of mutex must not be null.");
-        }
-    }
-
-    private Optional<XMutex<KeyT>> getExist(KeyT key) {
-        return Optional.ofNullable(weakHashMap.get(XMutex.of(key)))
-                       .map(WeakReference::get);
-    }
-
-    private XMutex<KeyT> saveNewReference(KeyT key) {
-
-        XMutex<KeyT> mutex = XMutex.of(key);
-
-        WeakReference<XMutex<KeyT>> res = weakHashMap.put(mutex, new WeakReference<>(mutex));
-        if (res != null && res.get() != null) {
-            return res.get();
-        }
-        return mutex;
+        return this.map.compute(key, (k, v) -> (v == null) ? new XMutex<>(k) : v);
     }
 
     /**
      * @return count of mutexes in this factory.
      */
     public long size() {
-        return weakHashMap.size();
+        return this.map.size();
+    }
+
+    /**
+     * Remove any entries that have been garbage collected and are no longer referenced.
+     * Under normal circumstances garbage collected entries are automatically purged
+     * when new items are created by a factory. This method can be used to force a purge.
+     */
+    public void purgeUnreferenced() {
+        ((ConcurrentReferenceHashMap) this.map).purgeUnreferencedEntries();
     }
 }

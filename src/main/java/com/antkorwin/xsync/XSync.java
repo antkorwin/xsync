@@ -1,5 +1,7 @@
 package com.antkorwin.xsync;
 
+import java.util.function.Supplier;
+
 /**
  * Created on 18.06.2018.
  *
@@ -20,6 +22,14 @@ public class XSync<KeyT> {
         XMutex<KeyT> mutex = mutexFactory.getMutex(mutexKey);
         synchronized (mutex) {
             runnable.run();
+        }
+    }
+
+
+    public <ResultT> ResultT evaluate(KeyT mutexKey, Supplier<ResultT> supplier) {
+        XMutex<KeyT> mutex = mutexFactory.getMutex(mutexKey);
+        synchronized (mutex) {
+            return supplier.get();
         }
     }
 }

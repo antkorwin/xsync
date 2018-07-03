@@ -103,6 +103,31 @@ public class XSyncTest {
         Assertions.assertThat(variable.getValue()).isEqualTo(2);
     }
 
+    @Test
+    public void testEvaluateSupplier() {
+        // Arrange
+        XSync<UUID> xsync = new XSync<>();
+        String id = UUID.randomUUID().toString();
+        NonAtomicInt var = new NonAtomicInt(0);
+
+        // Act
+        long sum = IntStream.range(0, THREAD_CNT)
+                            .boxed()
+                            .parallel()
+                            .mapToLong(i -> xsync.evaluate(UUID.fromString(id), var::increment))
+                            .sum();
+
+        // Wait
+        await().atMost(15, TimeUnit.SECONDS)
+               .until(var::getValue, equalTo(THREAD_CNT));
+
+        // Asserts
+        Assertions.assertThat(var.getValue()).isEqualTo(THREAD_CNT);
+
+        long expectedSum = ((long) (THREAD_CNT - 1) * THREAD_CNT) / 2;
+        Assertions.assertThat(sum).isEqualTo(expectedSum);
+    }
+
     @Getter
     @AllArgsConstructor
     private class NonAtomicInt {

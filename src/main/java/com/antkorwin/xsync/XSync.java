@@ -25,7 +25,16 @@ public class XSync<KeyT> {
         }
     }
 
-
+    /**
+     * Evaluate a supplier in a synchronization block on a mutex,
+     * which created from the mutexKey value.
+     *
+     * @param mutexKey  key for the synchronization locks
+     * @param supplier  function that we need to run in sync. block
+     * @param <ResultT> type of tht result of a supplier
+     *
+     * @return result which return by a supplier
+     */
     public <ResultT> ResultT evaluate(KeyT mutexKey, Supplier<ResultT> supplier) {
         XMutex<KeyT> mutex = mutexFactory.getMutex(mutexKey);
         synchronized (mutex) {

@@ -2,7 +2,8 @@ language: java
 jdk:
  - oraclejdk8
 
-script: "mvn cobertura:cobertura org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar"
+script:
+ - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
 
 addons:
   sonarcloud:
@@ -11,4 +12,5 @@ addons:
       secure: "faca0ba57e2786f53d9caa7099033aa000953f0f"
 
 after_success:
+ - mvn cobertura:cobertura
  - bash <(curl -s https://codecov.io/bash)

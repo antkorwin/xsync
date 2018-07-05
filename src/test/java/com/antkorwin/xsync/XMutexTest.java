@@ -15,6 +15,7 @@ public class XMutexTest {
 
     private final String FIRST_KEY = new String("111");
     private final String SECOND_KEY = new String("111");
+    private final String THIRD_KEY = new String("222");
 
     @Test
     public void testMutexEquals() {
@@ -25,7 +26,16 @@ public class XMutexTest {
         // Act & Assert
         Assertions.assertThat(FIRST_KEY != SECOND_KEY).isTrue();
         Assertions.assertThat(mutex1).isEqualTo(mutex2);
-        Assertions.assertThat(mutex1.equals(mutex2)).isTrue();
+    }
+
+    @Test
+    public void testMutexNotEquals() {
+        // Arrange
+        XMutex<String> mutex1 = new XMutex<>(FIRST_KEY);
+        XMutex<String> mutex2 = new XMutex<>(THIRD_KEY);
+
+        // Act & Assert
+        Assertions.assertThat(mutex1).isNotEqualTo(mutex2);
     }
 
     @Test

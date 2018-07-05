@@ -2,7 +2,13 @@ language: java
 jdk:
  - oraclejdk8
 
-script: "mvn cobertura:cobertura"
+script: "mvn cobertura:cobertura sonar:sonar"
+
+addons:
+  sonarcloud:
+    organization: "antkorwin-github"
+    token:
+      secure: "faca0ba57e2786f53d9caa7099033aa000953f0f"
 
 after_success:
  - bash <(curl -s https://codecov.io/bash)

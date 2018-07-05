@@ -1,5 +1,6 @@
-![build](https://api.travis-ci.com/antkorwin/xsync.svg?branch=master)
-![codecov](https://codecov.io/gh/antkorwin/xsync/branch/master/graph/badge.svg)
+[![Build Status](https://travis-ci.com/antkorwin/xsync.svg?branch=master)](https://travis-ci.com/antkorwin/xsync)
+[![codecov](https://codecov.io/gh/antkorwin/xsync/branch/master/graph/badge.svg)](https://codecov.io/gh/antkorwin/xsync)
+
 
 # XSync Library
 
@@ -101,6 +102,10 @@ public void testLock() throws InterruptedException {
 } 
 
 ``` 
+
+Result of this test:
+
+![result](http://antkorwin.com/concurrency/lock_test.png)
 
 
 You can find a project with examples here: [github.com/antkorwin/xsync-example](https://github.com/antkorwin/xsync-example)

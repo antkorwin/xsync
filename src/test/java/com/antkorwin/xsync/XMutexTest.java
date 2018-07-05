@@ -25,6 +25,7 @@ public class XMutexTest {
         // Act & Assert
         Assertions.assertThat(FIRST_KEY != SECOND_KEY).isTrue();
         Assertions.assertThat(mutex1).isEqualTo(mutex2);
+        Assertions.assertThat(mutex1.equals(mutex2)).isTrue();
     }
 
     @Test

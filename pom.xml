@@ -85,8 +85,8 @@
 
 		<dependency>
 			<groupId>com.github.antkorwin</groupId>
-			<artifactId>gc-test-utils</artifactId>
-			<version>0.1</version>
+			<artifactId>common-utils</artifactId>
+			<version>0.5</version>
 		</dependency>
 	</dependencies>
 
@@ -99,6 +99,18 @@
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<formats>
+						<format>html</format>
+						<format>xml</format>
+					</formats>
+					<check />
 				</configuration>
 			</plugin>
 		</plugins>

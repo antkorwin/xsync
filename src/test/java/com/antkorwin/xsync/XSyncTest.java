@@ -1,5 +1,8 @@
 package com.antkorwin.xsync;
 
+import com.antkorwin.commonutils.concurrent.NonAtomicInt;
+import com.antkorwin.commonutils.concurrent.ThreadSleep;
+import com.antkorwin.commonutils.validation.GuardCheck;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.assertj.core.api.Assertions;
@@ -77,21 +80,21 @@ public class XSyncTest {
             System.out.println("firstThread started.");
             xSync.execute(new String("key"), () -> {
                 System.out.println("firstThread took a lock");
-                TestUtils.sleep(2);
+                ThreadSleep.wait(2);
                 variable.increment();
                 System.out.println("firstThread released a look");
             });
         });
 
         executorService.submit(() -> {
-            TestUtils.sleep(1);
+            ThreadSleep.wait(1);
             System.out.println("secondThread started.");
             xSync.execute(new String("key"), () -> {
                 System.out.println("secondThread took a lock");
 
                 // Assert
                 Assertions.assertThat(variable.getValue()).isEqualTo(1);
-                TestUtils.sleep(1);
+                ThreadSleep.wait(1);
                 variable.increment();
                 System.out.println("secondThread released a look");
             });
@@ -109,6 +112,7 @@ public class XSyncTest {
         XSync<UUID> xsync = new XSync<>();
         String id = UUID.randomUUID().toString();
         NonAtomicInt var = new NonAtomicInt(0);
+        long expectedSum = ((long) (THREAD_CNT + 1) * THREAD_CNT) / 2;
 
         // Act
         long sum = IntStream.range(0, THREAD_CNT)
@@ -117,24 +121,18 @@ public class XSyncTest {
                             .mapToLong(i -> xsync.evaluate(UUID.fromString(id), var::increment))
                             .sum();
 
-        // Wait
-        await().atMost(15, TimeUnit.SECONDS)
-               .until(var::getValue, equalTo(THREAD_CNT));
-
         // Asserts
         Assertions.assertThat(var.getValue()).isEqualTo(THREAD_CNT);
-
-        long expectedSum = ((long) (THREAD_CNT - 1) * THREAD_CNT) / 2;
         Assertions.assertThat(sum).isEqualTo(expectedSum);
     }
 
-    @Getter
-    @AllArgsConstructor
-    private class NonAtomicInt {
-        private int value;
-
-        public int increment() {
-            return value++;
-        }
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testThrowExceptionInFunction() throws Exception {
+        // Arrange
+        XSync<Integer> xSync = new XSync<>();
+        // Act
+        xSync.evaluate(123, ()-> {
+            throw new IndexOutOfBoundsException();
+        });
     }
 }

@@ -1,3 +1,6 @@
+![build](https://api.travis-ci.com/antkorwin/xsync.svg?branch=master)
+![codecov](https://codecov.io/gh/antkorwin/xsync/branch/master/graph/badge.svg)
+
 # XSync Library
 
 

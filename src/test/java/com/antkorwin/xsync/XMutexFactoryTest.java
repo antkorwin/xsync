@@ -1,18 +1,17 @@
 package com.antkorwin.xsync;
 
-import com.antkorwin.gcutils.GcUtils;
+import com.antkorwin.commonutils.concurrent.ConcurrentSet;
+import com.antkorwin.commonutils.gc.GcUtils;
+import com.antkorwin.xsync.springframework.util.ConcurrentReferenceHashMap;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -121,8 +120,8 @@ public class XMutexFactoryTest {
     public void testALotOfHashCodes() {
         // Arrange
         XMutexFactory<UUID> mutexFactory = new XMutexFactory<>();
-        Set<Integer> setOfHash = TestUtils.createConcurrentSet();
-        Set<XMutex<UUID>> resultReferences = TestUtils.createConcurrentSet();
+        Set<Integer> setOfHash = ConcurrentSet.getInstance();
+        Set<XMutex<UUID>> resultReferences = ConcurrentSet.getInstance();
         UUID key = UUID.fromString(ID_STRING);
 
         XMutex<UUID> firstMutex = mutexFactory.getMutex(key);
@@ -153,7 +152,7 @@ public class XMutexFactoryTest {
                                   .map(i -> UUID.randomUUID())
                                   .collect(toList());
 
-        Set<XMutex<UUID>> results = TestUtils.createConcurrentSet();
+        Set<XMutex<UUID>> results = ConcurrentSet.getInstance();
 
         // Act
         IntStream.range(0, NUMBER_OF_ITERATIONS)
@@ -190,5 +189,41 @@ public class XMutexFactoryTest {
                       .isInstanceOf(IllegalArgumentException.class)
                       .hasMessage("The KEY of mutex must not be null.");
         }
+    }
+
+
+    @Test(timeout = TIMEOUT_FOR_PREVENTION_OF_DEADLOCK)
+    public void testWithCustomConcurrencySettingsWeakAndLevel() {
+        // Arrange
+        XMutexFactory<UUID> mutexFactory =
+                new XMutexFactory<>(8,
+                                    ConcurrentReferenceHashMap.ReferenceType.WEAK);
+
+        List<UUID> ids = IntStream.range(0, NUMBER_OF_MUTEXES)
+                                  .boxed()
+                                  .map(i -> UUID.randomUUID())
+                                  .collect(toList());
+
+        List<XMutex<UUID>> results = Collections.synchronizedList(new ArrayList<>());
+
+        // Act
+        IntStream.range(0, NUMBER_OF_ITERATIONS)
+                 .boxed()
+                 .parallel()
+                 .forEach(i -> {
+                     UUID uuid = ids.get(i % NUMBER_OF_MUTEXES);
+                     XMutex<UUID> mutex = mutexFactory.getMutex(uuid);
+                     results.add(mutex);
+                 });
+
+        // Asserts
+        await().atMost(10, TimeUnit.SECONDS)
+               .until(results::size, equalTo(NUMBER_OF_ITERATIONS));
+
+        Set<XMutex<UUID>> distinctResult = results.stream()
+                                                  .distinct()
+                                                  .collect(toSet());
+
+        Assertions.assertThat(distinctResult).hasSize(NUMBER_OF_MUTEXES);
     }
 }

@@ -42,4 +42,13 @@ public class XMutexTest {
         // Asserts
         Assertions.assertThat(map.size()).isEqualTo(1);
     }
+
+
+    @Test
+    public void testStaticFactoryMethod() throws Exception {
+        // Act
+        XMutex<Integer> mutex = XMutex.of(123);
+        // Assert
+        Assertions.assertThat(mutex.getKey()).isEqualTo(123);
+    }
 }

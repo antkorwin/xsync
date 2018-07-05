@@ -1,0 +1,2 @@
+ignore:
+  - "src/main/java/com/antkorwin/xsync/springframework/util"  # ignore sources from the spring framework

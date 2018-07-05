@@ -3,7 +3,7 @@ jdk:
  - oraclejdk8
 
 script:
- - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+ - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.exclusions="src/main/java/com/antkorwin/xsync/springframework/util/*"
 
 addons:
   sonarcloud:

@@ -39,6 +39,16 @@ public class XMutexTest {
     }
 
     @Test
+    public void testHashCode() {
+        // Arrange
+        XMutex<String> mutex1 = new XMutex<>(FIRST_KEY);
+        XMutex<String> mutex2 = new XMutex<>(SECOND_KEY);
+
+        // Act & Assert
+        Assertions.assertThat(mutex1.hashCode()).isEqualTo(mutex2.hashCode());
+    }
+
+    @Test
     public void testWeakMapWithTwoEqualMutexes() {
         // Arrange
         XMutex<String> mutex1 = new XMutex<>(FIRST_KEY);

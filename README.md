@@ -60,6 +60,8 @@ public class XSyncConfig {
 
 ## Use it
 
+
+### Simple example 
 ```java
 @Autowired
 private XSync<String> xSync;
@@ -107,5 +109,45 @@ Result of this test:
 
 ![result](http://antkorwin.com/concurrency/lock_test.png)
 
+
+### Example in the Banking System 
+
+More details in my article: [Synchronized by the value of the object](http://antkorwin.com/concurrency/synchronization_by_value.html)
+
+A business logic, that we need to synchronize:
+
+```java
+public class PaymentService {
+
+    ...
+
+    @Autowired
+    private XSync<UUID> xSync;
+
+    public void withdrawMoney(UUID userId, int amountOfMoney) {
+        xSync.execute(userId, () -> {  
+            Result result = externalCashBackService.evaluateCashBack(userId, amountOfMoney); 
+            accountService.transfer(userId, amountOfMoney + result.getCashBackAmount()); 
+            externalCashBackService.cashBackComplete(userId, result.getCashBackAmount()); 
+        });
+    }
+}
+```
+
+And places of a usage:
+
+```java
+public void threadA() {
+    paymentService.withdrawMoney(UUID.fromString("11111111-2222-3333-4444-555555555555"), 1000);
+}
+
+
+public void threadB() {
+    paymentService.withdrawMoney(UUID.fromString("11111111-2222-3333-4444-555555555555"), 5000);
+}
+```
+
+
+### Sample on github
 
 You can find a project with examples here: [github.com/antkorwin/xsync-example](https://github.com/antkorwin/xsync-example)

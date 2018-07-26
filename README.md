@@ -40,6 +40,18 @@ And repository:
 </repositories>
 ```
 
+If you use the XSync without Spring Framework or SpringBoot, 
+you will need to add the spring framework as dependency(since version - 3.2):
+
+```xml
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-core</artifactId>
+    <version>5.0.7.RELEASE</version>  
+    <scope>compile</scope>
+</dependency>
+```
+
 ## Create the XSync instance that your need
 
 ```java

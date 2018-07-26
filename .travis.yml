@@ -3,7 +3,7 @@ jdk:
  - oraclejdk8
 
 script:
- - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.exclusions="src/main/java/com/antkorwin/xsync/springframework/util/*" -Dsonar.issue.ignore.multicriteria="e1" -Dsonar.issue.ignore.multicriteria.e1.ruleKey="squid:S00119" -Dsonar.issue.ignore.multicriteria.e1.resourceKey="**/*.java"
+ - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.issue.ignore.multicriteria="e1" -Dsonar.issue.ignore.multicriteria.e1.ruleKey="squid:S00119" -Dsonar.issue.ignore.multicriteria.e1.resourceKey="**/*.java"
 
 addons:
   sonarcloud:

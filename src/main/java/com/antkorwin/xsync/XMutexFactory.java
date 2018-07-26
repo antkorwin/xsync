@@ -1,7 +1,9 @@
 package com.antkorwin.xsync;
 
 
-import com.antkorwin.xsync.springframework.util.ConcurrentReferenceHashMap;
+
+
+import org.springframework.util.ConcurrentReferenceHashMap;
 
 import java.util.concurrent.ConcurrentMap;
 
@@ -51,7 +53,8 @@ public class XMutexFactory<KeyT> {
      * then returns the same reference of the mutex.
      */
     public XMutex<KeyT> getMutex(KeyT key) {
-        return this.map.compute(key, (k, v) -> (v == null) ? new XMutex<>(k) : v);
+        //return this.map.compute(key, (k, v) -> (v == null) ? new XMutex<>(k) : v);
+        return this.map.computeIfAbsent(key, XMutex::new);
     }
 
     /**

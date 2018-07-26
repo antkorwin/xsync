@@ -24,8 +24,9 @@ public class XMutexTest {
         XMutex<String> mutex2 = new XMutex<>(SECOND_KEY);
 
         // Act & Assert
-        Assertions.assertThat(FIRST_KEY != SECOND_KEY).isTrue();
+        Assertions.assertThat(FIRST_KEY).isNotSameAs(SECOND_KEY);
         Assertions.assertThat(mutex1).isEqualTo(mutex2);
+        Assertions.assertThat(mutex1).isNotSameAs(mutex2);
     }
 
     @Test

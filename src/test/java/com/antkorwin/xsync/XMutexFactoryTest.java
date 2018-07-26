@@ -2,9 +2,10 @@ package com.antkorwin.xsync;
 
 import com.antkorwin.commonutils.concurrent.ConcurrentSet;
 import com.antkorwin.commonutils.gc.GcUtils;
-import com.antkorwin.xsync.springframework.util.ConcurrentReferenceHashMap;
+
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
+import org.springframework.util.ConcurrentReferenceHashMap;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +24,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class XMutexFactoryTest {
 
     private static final int TIMEOUT_FOR_PREVENTION_OF_DEADLOCK = 30000;
-    private static final int NUMBER_OF_MUTEXES = 100000;
+    private static final int NUMBER_OF_MUTEXES = 100_000;
     private static final int NUMBER_OF_ITERATIONS = NUMBER_OF_MUTEXES * 100;
     private static final String ID_STRING = "c117c526-606e-41b6-8197-1a6ba779f69b";
 
@@ -34,7 +35,7 @@ public class XMutexFactoryTest {
         UUID firstId = UUID.fromString(ID_STRING);
         UUID secondId = UUID.fromString(ID_STRING);
         // Check precondition
-        Assertions.assertThat(firstId != secondId).isTrue();
+        Assertions.assertThat(firstId).isNotSameAs(secondId);
         Assertions.assertThat(firstId).isEqualTo(secondId);
 
         // Act
@@ -45,7 +46,7 @@ public class XMutexFactoryTest {
         Assertions.assertThat(firstMutex).isNotNull();
         Assertions.assertThat(secondMutex).isNotNull();
         Assertions.assertThat(firstMutex).isEqualTo(secondMutex);
-        Assertions.assertThat(firstMutex == secondMutex).isTrue();
+        Assertions.assertThat(firstMutex).isSameAs(secondMutex);
     }
 
     @Test
@@ -134,7 +135,7 @@ public class XMutexFactoryTest {
             // because the GC can delete a unused references:
             resultReferences.add(mutex);
             // Assert
-            Assertions.assertThat(mutex == firstMutex).isTrue();
+            Assertions.assertThat(mutex).isSameAs(firstMutex);
         }
 
         // Assertions

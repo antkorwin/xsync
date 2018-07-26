@@ -12,7 +12,7 @@ import lombok.Getter;
 @Getter
 public class XMutex<KeyT> {
 
-    private KeyT key;
+    private final KeyT key;
 
     public XMutex(KeyT key) {
         this.key = key;

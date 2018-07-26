@@ -126,6 +126,15 @@ public class XSyncTest {
         Assertions.assertThat(sum).isEqualTo(expectedSum);
     }
 
+    //TODO:
+//    @Test
+//    public void testWorkWithoutLockingWhenTwoInstanceSXync(){
+//        XSync<String> xsyncFirst = new XSync<>();
+//        XSync<String> xsyncSecond = new XSync<>();
+//
+//        xsyncFirst
+//    }
+
     @Test(expected = IndexOutOfBoundsException.class)
     public void testThrowExceptionInFunction() throws Exception {
         // Arrange

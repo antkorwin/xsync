@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.equalTo;
  *
  * @author Korovin Anatoliy
  */
-public class XMutexFactoryTest {
+public class XMutexFactoryImplTest {
 
     private static final int TIMEOUT_FOR_PREVENTION_OF_DEADLOCK = 30000;
     private static final int NUMBER_OF_MUTEXES = 100_000;
@@ -31,7 +31,7 @@ public class XMutexFactoryTest {
     @Test
     public void testGetSameMutexFromTwoDifferentInstanceOfEqualsKeys() {
         // Arrange
-        XMutexFactory<UUID> mutexFactory = new XMutexFactory<>();
+        XMutexFactoryImpl<UUID> mutexFactory = new XMutexFactoryImpl<>();
         UUID firstId = UUID.fromString(ID_STRING);
         UUID secondId = UUID.fromString(ID_STRING);
         // Check precondition
@@ -52,7 +52,7 @@ public class XMutexFactoryTest {
     @Test
     public void testWithRunGCAfterReleaseFirstMutex() throws InterruptedException {
         // Arrange
-        XMutexFactory<UUID> mutexFactory = new XMutexFactory<>();
+        XMutexFactoryImpl<UUID> mutexFactory = new XMutexFactoryImpl<>();
         UUID firstId = UUID.fromString(ID_STRING);
         UUID secondId = UUID.fromString(ID_STRING);
 
@@ -82,7 +82,7 @@ public class XMutexFactoryTest {
     @Test
     public void testSizeOfMutexFactoryMap() {
         // Arrange
-        XMutexFactory<UUID> mutexFactory = new XMutexFactory<>();
+        XMutexFactoryImpl<UUID> mutexFactory = new XMutexFactoryImpl<>();
         UUID firstId = UUID.fromString(ID_STRING);
         UUID secondId = UUID.fromString(ID_STRING);
         UUID thirdId = UUID.randomUUID();
@@ -99,7 +99,7 @@ public class XMutexFactoryTest {
     @Test
     public void testEqualityOfReturnedMutexesBySystemIdentityHashCode() {
         // Arrange
-        XMutexFactory<UUID> mutexFactory = new XMutexFactory<>();
+        XMutexFactoryImpl<UUID> mutexFactory = new XMutexFactoryImpl<>();
         UUID firstId = UUID.fromString(ID_STRING);
         UUID secondId = UUID.fromString(ID_STRING);
         UUID thirdId = UUID.fromString(ID_STRING);
@@ -120,7 +120,7 @@ public class XMutexFactoryTest {
     @Test
     public void testALotOfHashCodes() {
         // Arrange
-        XMutexFactory<UUID> mutexFactory = new XMutexFactory<>();
+        XMutexFactoryImpl<UUID> mutexFactory = new XMutexFactoryImpl<>();
         Set<Integer> setOfHash = ConcurrentSet.getInstance();
         Set<XMutex<UUID>> resultReferences = ConcurrentSet.getInstance();
         UUID key = UUID.fromString(ID_STRING);
@@ -146,7 +146,7 @@ public class XMutexFactoryTest {
     @Test(timeout = TIMEOUT_FOR_PREVENTION_OF_DEADLOCK)
     public void testConcurrency() {
         // Arrange
-        XMutexFactory<UUID> mutexFactory = new XMutexFactory<>();
+        XMutexFactoryImpl<UUID> mutexFactory = new XMutexFactoryImpl<>();
 
         List<UUID> ids = IntStream.range(0, NUMBER_OF_MUTEXES)
                                   .boxed()
@@ -180,7 +180,7 @@ public class XMutexFactoryTest {
     @Test
     public void testExceptionThrownWhenTryToGetMutexWithNullKey() {
         // Arrange
-        XMutexFactory<UUID> mutexFactory = new XMutexFactory<>();
+        XMutexFactoryImpl<UUID> mutexFactory = new XMutexFactoryImpl<>();
         // Act
         try {
             mutexFactory.getMutex(null);
@@ -196,9 +196,9 @@ public class XMutexFactoryTest {
     @Test(timeout = TIMEOUT_FOR_PREVENTION_OF_DEADLOCK)
     public void testWithCustomConcurrencySettingsWeakAndLevel() {
         // Arrange
-        XMutexFactory<UUID> mutexFactory =
-                new XMutexFactory<>(8,
-                                    ConcurrentReferenceHashMap.ReferenceType.WEAK);
+        XMutexFactoryImpl<UUID> mutexFactory =
+                new XMutexFactoryImpl<>(8,
+                                        ConcurrentReferenceHashMap.ReferenceType.WEAK);
 
         List<UUID> ids = IntStream.range(0, NUMBER_OF_MUTEXES)
                                   .boxed()

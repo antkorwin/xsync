@@ -24,8 +24,8 @@ import static org.hamcrest.Matchers.equalTo;
  */
 public class XSyncTest {
 
-    private static final int TIMEOUT_FOR_PREVENTION_OF_DEADLOCK = 30000;
-    private static final int THREAD_CNT = 10000000;
+    private static final int TIMEOUT_FOR_PREVENTION_OF_DEADLOCK = 30_000;
+    private static final int THREAD_CNT = 10_000_000;
 
     @Test(timeout = TIMEOUT_FOR_PREVENTION_OF_DEADLOCK)
     public void testSyncBySingleKeyInConcurrency() {

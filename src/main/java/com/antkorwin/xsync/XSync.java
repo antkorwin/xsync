@@ -9,7 +9,7 @@ import java.util.function.Supplier;
  */
 public class XSync<KeyT> {
 
-    private XMutexFactory<KeyT> mutexFactory = new XMutexFactory<>();
+    private XMutexFactoryImpl<KeyT> mutexFactory = new XMutexFactoryImpl<>();
 
     /**
      * Executes a runnable in a synchronization block on a mutex,

@@ -10,7 +10,7 @@
 XSync is a thread-safe mutex factory, that provide 
 ability to synchronize by the value of the object(not by the object).
 
-And you can use it for all type of object which you need.
+And you can use it for all type of objects which you need.
 
 ![XSync mutex behavior](http://antkorwin.com/concurrency/diag-0672834a7737bb323990aabe3bcb5ce6.png)
 
@@ -19,25 +19,14 @@ You can read more about this library here:
 
 ## Add dependencies 
 
-You need to add next dependencies:
+You need to add the next dependencies:
 
 ```xml
 <dependency>
-	<groupId>com.github.antkorwin</groupId>
-	<artifactId>xsync</artifactId>
-	<version>0.6</version>
+    <groupId>com.antkorwin</groupId>
+    <artifactId>xsync</artifactId>
+    <version>1.0</version>
 </dependency>
-```
-
-And repository:
-
-```xml
-<repositories>
-	<repository>
-		<id>jitpack.io</id>
-		<url>https://jitpack.io</url>
-	</repository>
-</repositories>
 ```
 
 If you use the XSync without Spring Framework or SpringBoot, 
@@ -52,7 +41,10 @@ you will need to add the spring framework as dependency(since version - 3.2):
 </dependency>
 ```
 
-## Create the XSync instance that your need
+## Create the XSync instance 
+
+You can create XSync instances parametrized by the type of key which you need.
+For example we create two XSync instances for Integer and String keys and made it as Spring beans:
 
 ```java
 @Configuration
@@ -122,7 +114,7 @@ Result of this test:
 ![result](http://antkorwin.com/concurrency/lock_test.png)
 
 
-### Example in the Banking System 
+### Example of usage in a banking system 
 
 More details in my article: [Synchronized by the value of the object](http://antkorwin.com/concurrency/synchronization_by_value.html)
 

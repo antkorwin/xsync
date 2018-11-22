@@ -116,7 +116,9 @@ Result of this test:
 
 ### Example of usage in a banking system 
 
-More details in my article: [Synchronized by the value of the object](http://antkorwin.com/concurrency/synchronization_by_value.html)
+You can read more details about this example in my article: [Synchronized by the value of the object]
+(http://antkorwin
+.com/concurrency/synchronization_by_value.html)
 
 A business logic, that we need to synchronize:
 
@@ -138,7 +140,7 @@ public class PaymentService {
 }
 ```
 
-And places of a usage:
+And places of usages:
 
 ```java
 public void threadA() {

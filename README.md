@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.com/antkorwin/xsync.svg?branch=master)](https://travis-ci.com/antkorwin/xsync)
 [![codecov](https://codecov.io/gh/antkorwin/xsync/branch/master/graph/badge.svg)](https://codecov.io/gh/antkorwin/xsync)
-
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.antkorwin/xsync/badge.svg)](https://search.maven.org/search?q=g:com.antkorwin%20AND%20a:xsync)
 
 # XSync Library
 
@@ -15,7 +15,7 @@ And you can use it for all type of objects which you need.
 ![XSync mutex behavior](http://antkorwin.com/concurrency/diag-0672834a7737bb323990aabe3bcb5ce6.png)
 
 You can read more about this library here: 
-[Synchronization by the instance of the class](http://antkorwin.com/concurrency/synchronization_by_instance.html) 
+[Synchronized by the value of the object](http://antkorwin.com/concurrency/synchronization_by_instance.html) 
 
 ## Add dependencies 
 
@@ -154,6 +154,6 @@ public void threadB() {
 ```
 
 
-### Sample on github
+### Samples on github
 
 You can find a project with examples here: [github.com/antkorwin/xsync-example](https://github.com/antkorwin/xsync-example)

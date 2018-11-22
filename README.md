@@ -15,7 +15,7 @@ And you can use it for all type of objects which you need.
 ![XSync mutex behavior](http://antkorwin.com/concurrency/diag-0672834a7737bb323990aabe3bcb5ce6.png)
 
 You can read more about this library here: 
-[Synchronized by the value of the object](http://antkorwin.com/concurrency/synchronization_by_instance.html) 
+[Synchronized by the value of the object](http://antkorwin.com/concurrency/synchronization_by_value.html) 
 
 ## Add dependencies 
 

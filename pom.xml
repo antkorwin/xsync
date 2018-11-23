@@ -124,6 +124,7 @@
             <groupId>com.github.antkorwin</groupId>
             <artifactId>common-utils</artifactId>
             <version>0.5</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

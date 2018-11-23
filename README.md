@@ -25,7 +25,7 @@ You need to add the next dependencies:
 <dependency>
     <groupId>com.antkorwin</groupId>
     <artifactId>xsync</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 </dependency>
 ```
 
@@ -116,9 +116,8 @@ Result of this test:
 
 ### Example of usage in a banking system 
 
-You can read more details about this example in my article: [Synchronized by the value of the object]
-(http://antkorwin
-.com/concurrency/synchronization_by_value.html)
+You can read more details about this example in my article: 
+[Synchronized by the value of the object](http://antkorwin.com/concurrency/synchronization_by_value.html)
 
 A business logic, that we need to synchronize:
 
@@ -154,6 +153,6 @@ public void threadB() {
 ```
 
 
-### Samples on github
+### Examples on github
 
 You can find a project with examples here: [github.com/antkorwin/xsync-example](https://github.com/antkorwin/xsync-example)

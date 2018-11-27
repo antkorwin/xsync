@@ -5,7 +5,7 @@
 
     <groupId>com.antkorwin</groupId>
     <artifactId>xsync</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <name>XSync</name>
@@ -63,13 +63,6 @@
         </repository>
     </distributionManagement>
 
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -121,9 +114,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.antkorwin</groupId>
+            <groupId>com.antkorwin</groupId>
             <artifactId>common-utils</artifactId>
-            <version>0.5</version>
+            <version>1.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

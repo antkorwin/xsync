@@ -156,3 +156,8 @@ public void threadB() {
 ### Examples on github
 
 You can find a project with examples here: [github.com/antkorwin/xsync-example](https://github.com/antkorwin/xsync-example)
+
+
+## License
+
+XSync is Open Source Software released under the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0.html).

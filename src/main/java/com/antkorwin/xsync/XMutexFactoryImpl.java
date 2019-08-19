@@ -54,7 +54,6 @@ public class XMutexFactoryImpl<KeyT> implements XMutexFactory<KeyT> {
      */
     @Override
     public XMutex<KeyT> getMutex(KeyT key) {
-        //return this.map.compute(key, (k, v) -> (v == null) ? new XMutex<>(k) : v);
         return this.map.computeIfAbsent(key, XMutex::new);
     }
 

@@ -11,6 +11,9 @@ public interface XMutexFactory<KeyT> {
      * Creates and returns a mutex by the key.
      * If the mutex for this key already exists(or use by another thread),
      * then returns the same reference of the mutex.
+     *
+     * @param key object which used as a key for synchronization
+     * @return mutext instance created for this key
      */
     XMutex<KeyT> getMutex(KeyT key);
 

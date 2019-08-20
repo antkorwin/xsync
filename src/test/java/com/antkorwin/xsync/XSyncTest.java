@@ -2,9 +2,6 @@ package com.antkorwin.xsync;
 
 import com.antkorwin.commonutils.concurrent.NonAtomicInt;
 import com.antkorwin.commonutils.concurrent.ThreadSleep;
-import com.antkorwin.commonutils.validation.GuardCheck;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

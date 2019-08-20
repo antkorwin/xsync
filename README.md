@@ -25,7 +25,7 @@ You need to add the next dependencies:
 <dependency>
     <groupId>com.antkorwin</groupId>
     <artifactId>xsync</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
 </dependency>
 ```
 

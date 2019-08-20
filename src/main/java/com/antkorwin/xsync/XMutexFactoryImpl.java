@@ -10,6 +10,8 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Created on 14.06.2018.
  *
+ * The factory of mutexes, based on {@link ConcurrentReferenceHashMap}
+ *
  * @author Korovin Anatoliy
  */
 public class XMutexFactoryImpl<KeyT> implements XMutexFactory<KeyT> {

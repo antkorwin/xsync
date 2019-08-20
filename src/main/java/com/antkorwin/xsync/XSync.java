@@ -5,6 +5,9 @@ import java.util.function.Supplier;
 /**
  * Created on 18.06.2018.
  *
+ * XSync is a thread-safe mutex factory, that provide an
+ * ability to synchronize by the value of object(not by the reference of object).
+ *
  * @author Korovin Anatoliy
  */
 public class XSync<KeyT> {

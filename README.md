@@ -25,19 +25,7 @@ You need to add the next dependencies:
 <dependency>
     <groupId>com.antkorwin</groupId>
     <artifactId>xsync</artifactId>
-    <version>1.2</version>
-</dependency>
-```
-
-If you use the XSync without Spring Framework or SpringBoot, 
-you will need to add the spring framework as dependency(since version - 3.2):
-
-```xml
-<dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-core</artifactId>
-    <version>5.0.7.RELEASE</version>  
-    <scope>compile</scope>
+    <version>1.3</version>
 </dependency>
 ```
 

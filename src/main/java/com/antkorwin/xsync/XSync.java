@@ -70,6 +70,96 @@ public class XSync<KeyT> {
 
 
 	/**
+	 * Execute the runnable within a pair of synchronized blocks
+	 * which built from the first and the second keys.
+	 * <p>
+	 * Note that the ordering of keys in synchronized blocks doesn't depend
+	 * on the ordering of keys in this method arguments. The order depends
+	 * on the values of keys, it prevents your code from deadlocking.
+	 * So, you don't need to care about the order of the keys if you use XSync.
+	 *
+	 * @param firstKey  the first key to use in the synchronization blocks
+	 * @param secondKey the second key
+	 * @param runnable  code which you want to synchronize
+	 */
+	public void execute(KeyT firstKey, KeyT secondKey, Runnable runnable) {
+
+		XMutex<KeyT> firstMutex = mutexFactory.getMutex(firstKey);
+		XMutex<KeyT> secondMutex = mutexFactory.getMutex(secondKey);
+
+		int firstHash = System.identityHashCode(firstKey);
+		int secondHash = System.identityHashCode(secondKey);
+
+		if (firstHash > secondHash) {
+			XMutex<KeyT> tmp = firstMutex;
+			firstMutex = secondMutex;
+			secondMutex = tmp;
+		}
+
+		if (firstHash != secondHash) {
+			synchronized (firstMutex) {
+				synchronized (secondMutex) {
+					runnable.run();
+				}
+			}
+		} else {
+			synchronized (globalLock) {
+				synchronized (firstMutex) {
+					synchronized (secondMutex) {
+						runnable.run();
+					}
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Evaluate the {@link Supplier} within a pair of synchronized blocks
+	 * which built from the first and the second keys.
+	 * <p>
+	 * Note that the ordering of keys in synchronized blocks doesn't depend
+	 * on the ordering of keys in this method arguments. The order depends
+	 * on the values of keys, it prevents your code from deadlocking.
+	 * So, you don't need to care about the order of the keys if you use XSync.
+	 *
+	 * @param firstKey  the first key to use in the synchronization blocks
+	 * @param secondKey the second key
+	 * @param supplier  code which you want to synchronize
+	 * @return the result of the supplier
+	 */
+	public <ResultT> ResultT evaluate(KeyT firstKey, KeyT secondKey, Supplier<ResultT> supplier) {
+
+		XMutex<KeyT> firstMutex = mutexFactory.getMutex(firstKey);
+		XMutex<KeyT> secondMutex = mutexFactory.getMutex(secondKey);
+
+		int firstHash = System.identityHashCode(firstKey);
+		int secondHash = System.identityHashCode(secondKey);
+
+		if (firstHash > secondHash) {
+			XMutex<KeyT> tmp = firstMutex;
+			firstMutex = secondMutex;
+			secondMutex = tmp;
+		}
+
+		if (firstHash != secondHash) {
+			synchronized (firstMutex) {
+				synchronized (secondMutex) {
+					return supplier.get();
+				}
+			}
+		} else {
+			synchronized (globalLock) {
+				synchronized (firstMutex) {
+					synchronized (secondMutex) {
+						return supplier.get();
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Execute the runnable in a multi-keys synchronization block
 	 * which compose step-by-step on the each key from the keys collection.
 	 * <p><br/>

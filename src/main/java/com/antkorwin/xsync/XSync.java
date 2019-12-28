@@ -162,8 +162,8 @@ public class XSync<KeyT> {
 	/**
 	 * Execute the runnable in a multi-keys synchronization block
 	 * which compose step-by-step on the each key from the keys collection.
-	 * <p><br/>
-	 * Note:<br/>
+	 * <p>
+	 * Note:<p>
 	 * The ordering of synchronization depends on the key value (not on
 	 * the key order in the collection), it prevents your code of deadlocks
 	 * in another code with synchronized blocks on the same keys.
@@ -226,7 +226,7 @@ public class XSync<KeyT> {
 	/**
 	 * Evaluate the supplier in a multi-keys synchronization block
 	 * which compose step-by-step sync on the each key from the keys collection.
-	 * <p><br/>
+	 * <p>
 	 * Note that the ordering of synchronization depends on the key value (not on
 	 * the key order in the collection), it prevents your code of deadlocks
 	 * in another code with synchronized blocks on the same keys.

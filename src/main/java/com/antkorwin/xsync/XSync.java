@@ -16,9 +16,27 @@ import java.util.stream.Collectors;
  */
 public class XSync<KeyT> {
 
-	private XMutexFactoryImpl<KeyT> mutexFactory = new XMutexFactoryImpl<>();
+	private final XMutexFactoryImpl<KeyT> mutexFactory;
 
 	private static final Object globalLock = new Object();
+
+	/**
+	 * Make the new XSync instance with an individual mutex factory
+	 */
+	public XSync() {
+		this.mutexFactory = new XMutexFactoryImpl<>();
+	}
+
+	/**
+	 * Make the new XSync with selected mutex factory,
+	 * it's useful when you need to create a multiple XSync instances
+	 * based on the same mutex factory.
+	 *
+	 * @param mutexFactory the mutex factory instance to obtain all mutexes from key values
+	 */
+	public XSync(XMutexFactoryImpl<KeyT> mutexFactory) {
+		this.mutexFactory = mutexFactory;
+	}
 
 	/**
 	 * Executes a runnable in a synchronization block on a mutex,
@@ -50,8 +68,9 @@ public class XSync<KeyT> {
 		}
 	}
 
+
 	/**
-	 * Evaluate runnable in a multi-keys synchronization block
+	 * Execute the runnable in a multi-keys synchronization block
 	 * which compose step-by-step on the each key from the keys collection.
 	 * <p><br/>
 	 * Note:<br/>
@@ -115,11 +134,17 @@ public class XSync<KeyT> {
 
 
 	/**
+	 * Evaluate the supplier in a multi-keys synchronization block
+	 * which compose step-by-step sync on the each key from the keys collection.
+	 * <p><br/>
+	 * Note that the ordering of synchronization depends on the key value (not on
+	 * the key order in the collection), it prevents your code of deadlocks
+	 * in another code with synchronized blocks on the same keys.
 	 *
-	 * @param keys
-	 * @param supplier
-	 * @param <ResultT>
-	 * @return
+	 * @param keys      collection of keys to sequentially synchronization
+	 * @param supplier  running of this code should be synchronized by the sequence of keys
+	 * @param <ResultT> the type of a supplier result
+	 * @return the result of supplier execution
 	 */
 	public <ResultT> ResultT evaluate(Collection<KeyT> keys, Supplier<ResultT> supplier) {
 

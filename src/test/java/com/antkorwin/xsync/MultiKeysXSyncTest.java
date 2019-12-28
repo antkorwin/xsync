@@ -101,6 +101,22 @@ public class MultiKeysXSyncTest {
 		assertThat(sum).isEqualTo(accounts.size() * INITIAL_BALANCE);
 	}
 
+	@Test
+	void syncByTheEmptyListOfKeys() {
+
+		Exception exception = null;
+		try {
+			xsync.execute(Arrays.asList(), () -> {
+				// nop
+			});
+		} catch (Exception e) {
+			exception = e;
+		}
+
+		assertThat(exception).isNotNull();
+		assertThat(exception.getClass()).isEqualTo(RuntimeException.class);
+		assertThat(exception.getMessage()).isEqualTo("Empty key list");
+	}
 
 	private void transfer(Account first, Account second, Account collector) {
 		xsync.execute(Arrays.asList(first.getId(), second.getId(), collector.getId()),

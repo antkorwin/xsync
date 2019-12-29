@@ -126,6 +126,7 @@ public class XSync<KeyT> {
 	 * @param firstKey  the first key to use in the synchronization blocks
 	 * @param secondKey the second key
 	 * @param supplier  code which you want to synchronize
+	 * @param <ResultT> the type of supplier's result
 	 * @return the result of the supplier
 	 */
 	public <ResultT> ResultT evaluate(KeyT firstKey, KeyT secondKey, Supplier<ResultT> supplier) {

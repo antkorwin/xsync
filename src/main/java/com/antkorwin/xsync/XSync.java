@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  */
 public class XSync<KeyT> {
 
-	private final XMutexFactoryImpl<KeyT> mutexFactory;
+	private final XMutexFactory<KeyT> mutexFactory;
 
 	private static final Object globalLock = new Object();
 
@@ -34,7 +34,7 @@ public class XSync<KeyT> {
 	 *
 	 * @param mutexFactory the mutex factory instance to obtain all mutexes from key values
 	 */
-	public XSync(XMutexFactoryImpl<KeyT> mutexFactory) {
+	public XSync(XMutexFactory<KeyT> mutexFactory) {
 		this.mutexFactory = mutexFactory;
 	}
 

@@ -1,2 +1,3 @@
 ignore:
   - "src/main/java/com/antkorwin/xsync/springframework/util"  # ignore sources from the spring framework
+  - "src/main/java/org/hibernate/validator/internal/util"  # ignore the sources of the ConcurrentReferenceHashMap (from Hibernate)

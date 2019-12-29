@@ -122,10 +122,10 @@ public class MultiKeysXSyncTest {
 			                Account from = accounts.get(fromId);
 			                int toId = randomExclude(accounts.size(), fromId);
 			                Account to = accounts.get(toId);
-			                int creditorId = randomExclude(accounts.size(), fromId, toId);
-			                Account creditor = accounts.get(creditorId);
+			                int collectorId = randomExclude(accounts.size(), fromId, toId);
+			                Account collector = accounts.get(collectorId);
 			                // Act
-			                transfer(from, to, creditor);
+			                transfer(from, to, collector);
 		                });
 		// Assert
 		long sum = accounts.stream()
@@ -156,10 +156,10 @@ public class MultiKeysXSyncTest {
 			                Account from = accounts.get(fromId);
 			                int toId = randomExclude(accounts.size(), fromId);
 			                Account to = accounts.get(toId);
-			                int creditorId = randomExclude(accounts.size(), fromId, toId);
-			                Account creditor = accounts.get(creditorId);
+			                int collectorId = randomExclude(accounts.size(), fromId, toId);
+			                Account collector = accounts.get(collectorId);
 			                // Act
-			                long resultBalance = transferEval(from, to, creditor);
+			                long resultBalance = transferEval(from, to, collector);
 			                // Assert
 			                assertThat(resultBalance).isGreaterThan(0);
 		                });

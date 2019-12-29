@@ -142,7 +142,7 @@ public class XSyncTest {
 	@Test
 	public void testLockingWhenTwoInstanceOfXSyncBasedOnSameFactory() {
 
-		// making two synchronization primitives with individual mutex factories
+		// making two synchronization primitives with the same mutex factory
 		XMutexFactory<String> factory = new XMutexFactoryImpl<>();
 		XSync<String> xsyncFirst = new XSync<>(factory);
 		XSync<String> xsyncSecond = new XSync<>(factory);

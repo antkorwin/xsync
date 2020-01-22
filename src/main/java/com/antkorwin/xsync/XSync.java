@@ -201,6 +201,7 @@ public class XSync<KeyT> {
 
 		List<Integer> hashCodes = mutexes.stream()
 		                                 .map(System::identityHashCode)
+		                                 .distinct()
 		                                 .collect(Collectors.toList());
 
 		return hashCodes.size() < mutexes.size();

@@ -179,7 +179,7 @@ public class XSync<KeyT> {
 		}
 
 		List<XMutex<KeyT>> mutexes = getOrderedMutexList(keys);
-		if (existCollisionByHashCodes(mutexes)) {
+		if (CollisionDetector.existSameHashCodes(mutexes)) {
 			synchronized (globalLock) {
 				recursiveExecute(mutexes, runnable);
 			}
@@ -194,16 +194,6 @@ public class XSync<KeyT> {
 		           .map(mutexFactory::getMutex)
 		           .sorted(Comparator.comparingInt(System::identityHashCode))
 		           .collect(Collectors.toList());
-	}
-
-
-	private boolean existCollisionByHashCodes(List<XMutex<KeyT>> mutexes) {
-
-		List<Integer> hashCodes = mutexes.stream()
-		                                 .map(System::identityHashCode)
-		                                 .collect(Collectors.toList());
-
-		return hashCodes.size() < mutexes.size();
 	}
 
 
@@ -244,7 +234,7 @@ public class XSync<KeyT> {
 		}
 
 		List<XMutex<KeyT>> mutexes = getOrderedMutexList(keys);
-		if (existCollisionByHashCodes(mutexes)) {
+		if (CollisionDetector.existSameHashCodes(mutexes)) {
 			synchronized (globalLock) {
 				return recursiveEvaluate(mutexes, supplier);
 			}

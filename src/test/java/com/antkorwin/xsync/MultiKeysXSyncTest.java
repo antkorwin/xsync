@@ -134,6 +134,10 @@ public class MultiKeysXSyncTest {
 		assertThat(sum).isEqualTo(accounts.size() * INITIAL_BALANCE);
 	}
 
+	/**
+	 * check the correct synchronization on the local(for XSync instance) mutex
+	 * when internal hash led to a collision of multiple mutexes
+	 */
 	@Test
 	void collectionWithTheSameKeysSynchronizeExecute() {
 		List<Account> accounts = LongStream.range(0, 10)

@@ -5,12 +5,12 @@ jdk:
 script:
  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.issue.ignore.multicriteria="e1" -Dsonar.issue.ignore.multicriteria.e1.ruleKey="squid:S00119" -Dsonar.issue.ignore.multicriteria.e1.resourceKey="**/*.java"
 
+
 addons:
   sonarcloud:
     organization: "antkorwin-github"
     token:
-      secure: "faca0ba57e2786f53d9caa7099033aa000953f0f"
+      secure: $SONAR_CLOUD_KEY
 
 after_success:
- - mvn cobertura:cobertura
  - bash <(curl -s https://codecov.io/bash)

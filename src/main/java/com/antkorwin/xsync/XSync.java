@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class XSync<KeyT> {
 
 	private final XMutexFactory<KeyT> mutexFactory;
+	private final MutexSorter<KeyT> mutexSorter;
 
 	private static final Object globalLock = new Object();
 
@@ -25,6 +26,7 @@ public class XSync<KeyT> {
 	 */
 	public XSync() {
 		this.mutexFactory = new XMutexFactoryImpl<>();
+		this.mutexSorter = new MutexSorter<>(mutexFactory);
 	}
 
 	/**
@@ -36,6 +38,7 @@ public class XSync<KeyT> {
 	 */
 	public XSync(XMutexFactory<KeyT> mutexFactory) {
 		this.mutexFactory = mutexFactory;
+		this.mutexSorter = new MutexSorter<>(mutexFactory);
 	}
 
 	/**
@@ -160,6 +163,7 @@ public class XSync<KeyT> {
 		}
 	}
 
+
 	/**
 	 * Execute the runnable in a multi-keys synchronization block
 	 * which compose step-by-step on the each key from the keys collection.
@@ -178,8 +182,8 @@ public class XSync<KeyT> {
 			throw new RuntimeException("Empty key list");
 		}
 
-		List<XMutex<KeyT>> mutexes = getOrderedMutexList(keys);
-		if (existCollisionByHashCodes(mutexes)) {
+		List<XMutex<KeyT>> mutexes = mutexSorter.getOrderedMutexList(keys);
+		if (mutexSorter.existCollision(mutexes)) {
 			synchronized (globalLock) {
 				recursiveExecute(mutexes, runnable);
 			}
@@ -187,25 +191,6 @@ public class XSync<KeyT> {
 			recursiveExecute(mutexes, runnable);
 		}
 	}
-
-
-	private List<XMutex<KeyT>> getOrderedMutexList(Collection<KeyT> keys) {
-		return keys.stream()
-		           .map(mutexFactory::getMutex)
-		           .sorted(Comparator.comparingInt(System::identityHashCode))
-		           .collect(Collectors.toList());
-	}
-
-
-	private boolean existCollisionByHashCodes(List<XMutex<KeyT>> mutexes) {
-
-		List<Integer> hashCodes = mutexes.stream()
-		                                 .map(System::identityHashCode)
-		                                 .collect(Collectors.toList());
-
-		return hashCodes.size() < mutexes.size();
-	}
-
 
 	private void recursiveExecute(List<XMutex<KeyT>> mutexes, Runnable runnable) {
 
@@ -243,8 +228,8 @@ public class XSync<KeyT> {
 			throw new RuntimeException("Empty key list");
 		}
 
-		List<XMutex<KeyT>> mutexes = getOrderedMutexList(keys);
-		if (existCollisionByHashCodes(mutexes)) {
+		List<XMutex<KeyT>> mutexes = mutexSorter.getOrderedMutexList(keys);
+		if (mutexSorter.existCollision(mutexes)) {
 			synchronized (globalLock) {
 				return recursiveEvaluate(mutexes, supplier);
 			}
@@ -252,7 +237,6 @@ public class XSync<KeyT> {
 			return recursiveEvaluate(mutexes, supplier);
 		}
 	}
-
 
 	private <ResultT> ResultT recursiveEvaluate(List<XMutex<KeyT>> mutexes, Supplier<ResultT> supplier) {
 

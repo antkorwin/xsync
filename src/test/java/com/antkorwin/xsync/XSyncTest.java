@@ -1,5 +1,10 @@
 package com.antkorwin.xsync;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.awaitility.Awaitility.await;
+import static org.hamcrest.Matchers.equalTo;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -9,15 +14,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+
 import com.antkorwin.commonutils.concurrent.NonAtomicInt;
 import com.antkorwin.commonutils.concurrent.ThreadSleep;
 import com.jupiter.tools.stress.test.concurrency.ExecutionMode;
 import com.jupiter.tools.stress.test.concurrency.StressTestRunner;
-import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
-import static org.hamcrest.Matchers.equalTo;
 
 /**
  * Created on 18.06.2018.
@@ -30,7 +33,8 @@ public class XSyncTest {
 	private static final int THREAD_CNT = 10_000_000;
 	private static final int ITERATION_COUNT = 100_000;
 
-	@Test(timeout = TIMEOUT_FOR_PREVENTION_OF_DEADLOCK)
+	@Test
+	@Timeout(value = TIMEOUT_FOR_PREVENTION_OF_DEADLOCK, unit = TimeUnit.MILLISECONDS)
 	public void testSyncBySingleKeyInConcurrency() {
 		// Arrange
 		XSync<UUID> xsync = new XSync<>();
@@ -50,7 +54,8 @@ public class XSyncTest {
 		assertThat(var.getValue()).isEqualTo(THREAD_CNT);
 	}
 
-	@Test(timeout = TIMEOUT_FOR_PREVENTION_OF_DEADLOCK)
+	@Test
+	@Timeout(value = TIMEOUT_FOR_PREVENTION_OF_DEADLOCK, unit = TimeUnit.MILLISECONDS)
 	public void testSyncBySameValueOfKeyInConcurrency() {
 		// Arrange
 		XSync<UUID> xsync = new XSync<>();
@@ -129,13 +134,16 @@ public class XSyncTest {
 		assertThat(sum).isEqualTo(expectedSum);
 	}
 
-	@Test(expected = IndexOutOfBoundsException.class)
+	@Test
 	public void testThrowExceptionInFunction() throws Exception {
 		// Arrange
 		XSync<Integer> xSync = new XSync<>();
+
 		// Act
-		xSync.evaluate(123, () -> {
-			throw new IndexOutOfBoundsException();
+		assertThatExceptionOfType(IndexOutOfBoundsException.class).isThrownBy(() -> {
+			xSync.evaluate(123, () -> {
+				throw new IndexOutOfBoundsException();
+			});
 		});
 	}
 
@@ -175,7 +183,7 @@ public class XSyncTest {
 		assertThat(sum).isEqualTo(ITERATION_COUNT);
 	}
 
-	@Test(expected = Throwable.class)
+	@Test
 	public void xSyncWithDifferentMutexFactoriesDoesntLock() {
 
 		// making two synchronization primitives with individual mutex factories
@@ -204,9 +212,9 @@ public class XSyncTest {
 		                });
 
 		long sum = results.stream()
-		                  .mapToLong(i -> i)
+		                  .mapToLong(i -> i == null ? 0 : (long)i)
 		                  .sum();
 
-		assertThat(sum).isEqualTo(ITERATION_COUNT);
+		assertThat(sum).isNotEqualTo(ITERATION_COUNT);
 	}
 }

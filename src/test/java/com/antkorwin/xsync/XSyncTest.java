@@ -192,7 +192,7 @@ public class XSyncTest {
 
 		String key = "123456789";
 
-		List<Integer> results = new ArrayList<>();
+		List<Integer> results = new ArrayList<>(1);
 		AtomicInteger counter = new AtomicInteger(0);
 
 		StressTestRunner.test()
@@ -208,13 +208,17 @@ public class XSyncTest {
 			                } else {
 				                sync = xsyncSecond;
 			                }
-			                sync.execute(key, () -> results.add(1));
+			                sync.execute(key, () -> {
+						        if (results.isEmpty()) {
+							        results.add(0, 0);
+						        }
+			                	final int previousValue = results.get(0);
+			                	results.set(0, previousValue + 1);
+		                	});
 		                });
 
-		long sum = results.stream()
-		                  .mapToLong(i -> i == null ? 0 : (long)i)
-		                  .sum();
+		final int sum = results.get(0);
 
-		assertThat(sum).isNotEqualTo(ITERATION_COUNT);
+		assertThat(sum).isLessThan(ITERATION_COUNT);
 	}
 }

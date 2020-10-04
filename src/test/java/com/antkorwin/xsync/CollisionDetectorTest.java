@@ -6,13 +6,16 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
-
+@RunWith(MockitoJUnitRunner.class)
 class CollisionDetectorTest {
 
+	@Mock
 	private XMutexFactory<Integer> factory;
 	private MutexSorter<Integer> sorter;
 
@@ -21,7 +24,6 @@ class CollisionDetectorTest {
 
 		@BeforeEach
 		void setUp() {
-			factory = mock(XMutexFactory.class);
 			sorter = new MutexSorter<>(factory);
 		}
 

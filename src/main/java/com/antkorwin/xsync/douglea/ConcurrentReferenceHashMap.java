@@ -11,7 +11,7 @@
  * http://creativecommons.org/licenses/publicdomain
  */
 
-package org.hibernate.validator.internal.util;
+package com.antkorwin.xsync.douglea;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.ref.Reference;

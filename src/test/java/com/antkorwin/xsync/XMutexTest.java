@@ -1,10 +1,10 @@
 package com.antkorwin.xsync;
 
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
-
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
+
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created on 17.06.2018.

@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.equalTo;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -220,5 +222,28 @@ public class XSyncTest {
 		final int sum = results.get(0);
 
 		assertThat(sum).isLessThan(ITERATION_COUNT);
+	}
+
+	@Test
+	void testDeadlockWithTwoKeys() {
+		// Arrange
+		XSync<Long> xSync = new XSync<>();
+
+		// Act
+		StressTestRunner.test()
+						.iterations(ITERATION_COUNT)
+						.threads(8)
+						.mode(ExecutionMode.EXECUTOR_MODE)
+						// deadlock prevention
+						.timeout(1, TimeUnit.MINUTES)
+						.run(() -> {
+							Long id1 = 128L;
+							Long id2 = 129L;
+							xSync.execute(id1, id2, () -> {});
+						});
+
+		// Assert
+		ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
+		assertThat(threadMXBean.findDeadlockedThreads()).isNull();
 	}
 }

@@ -1,10 +1,8 @@
 package com.antkorwin.xsync;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Created on 18.06.2018.
@@ -90,8 +88,8 @@ public class XSync<KeyT> {
 		XMutex<KeyT> firstMutex = mutexFactory.getMutex(firstKey);
 		XMutex<KeyT> secondMutex = mutexFactory.getMutex(secondKey);
 
-		int firstHash = System.identityHashCode(firstKey);
-		int secondHash = System.identityHashCode(secondKey);
+		int firstHash = System.identityHashCode(firstMutex);
+		int secondHash = System.identityHashCode(secondMutex);
 
 		if (firstHash > secondHash) {
 			XMutex<KeyT> tmp = firstMutex;
@@ -137,8 +135,8 @@ public class XSync<KeyT> {
 		XMutex<KeyT> firstMutex = mutexFactory.getMutex(firstKey);
 		XMutex<KeyT> secondMutex = mutexFactory.getMutex(secondKey);
 
-		int firstHash = System.identityHashCode(firstKey);
-		int secondHash = System.identityHashCode(secondKey);
+		int firstHash = System.identityHashCode(firstMutex);
+		int secondHash = System.identityHashCode(secondMutex);
 
 		if (firstHash > secondHash) {
 			XMutex<KeyT> tmp = firstMutex;

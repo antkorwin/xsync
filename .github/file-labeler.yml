@@ -1,0 +1,17 @@
+'type:build':
+  - ".github/**"
+  - "pom.xml"
+  - ".travis.yml"
+  - ".gitignore"
+  - "Dockerfile"
+  - ".codecov.yml"
+'type:features':
+  - "src/main/**"
+'type:tests':
+  - "src/test/**"
+'type:documentation':
+  - '*.md'
+  - "docs/**"
+'type:trash':
+  - ".idea/**"
+  - "target/**"

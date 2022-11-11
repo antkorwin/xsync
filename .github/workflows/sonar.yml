@@ -25,4 +25,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 #       run sonar maven plugin:
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=com.antkorwin:xsync -Dsonar.organization=antkorwin-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=./target/site/jacoco/jacoco.xml
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=com.antkorwin:xsync -Dsonar.organization=antkorwin-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=./target/site/jacoco/jacoco.xml

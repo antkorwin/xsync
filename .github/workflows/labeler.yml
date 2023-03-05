@@ -1,0 +1,27 @@
+name: Auto-assign labels to PR
+
+on:
+  workflow_call:
+
+jobs:
+  file-labeler:
+    name: File labeler
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/labeler@v4
+        with:
+          configuration-path: .github/file-labeler.yml
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+  branch-labeler:
+    name: Branch labeler
+    needs: file-labeler
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: TimonVS/pr-labeler-action@v3
+        with:
+          configuration-path: .github/branch-labeler.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

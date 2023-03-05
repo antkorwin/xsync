@@ -1,0 +1,28 @@
+name: Verify labels in PR
+
+on:
+  workflow_call:
+    inputs:
+      exit_type:
+        default: failure
+        required: false
+        type: string
+    outputs:
+      result:
+        value: ${{ jobs.label-verify.outputs.status }}
+
+jobs:
+  label-verify:
+    runs-on: ubuntu-20.04
+    outputs:
+      status: ${{ steps.check-labels.outputs.status }}
+    steps:
+      - id: check-labels
+        uses: mheap/github-action-required-labels@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          mode: minimum
+          count: 1
+          labels: "type:fix, type:features, type:documentation, type:tests, type:config, type:build"
+          exit_type: ${{ inputs.exit_type }}

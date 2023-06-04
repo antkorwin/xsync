@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/antkorwin/xsync.svg?branch=master)](https://travis-ci.com/antkorwin/xsync)
+![build status](https://github.com/antkorwin/xsync/actions/workflows/build.yml/badge.svg)
 [![codecov](https://codecov.io/gh/antkorwin/xsync/branch/master/graph/badge.svg)](https://codecov.io/gh/antkorwin/xsync)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.antkorwin/xsync/badge.svg)](https://search.maven.org/search?q=g:com.antkorwin%20AND%20a:xsync)
 

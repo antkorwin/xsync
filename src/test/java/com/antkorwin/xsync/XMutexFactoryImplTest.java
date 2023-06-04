@@ -11,7 +11,8 @@ import java.util.stream.IntStream;
 import com.antkorwin.commonutils.concurrent.ConcurrentSet;
 import com.antkorwin.commonutils.gc.GcUtils;
 import org.hibernate.validator.internal.util.ConcurrentReferenceHashMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -155,7 +156,8 @@ public class XMutexFactoryImplTest {
 		assertThat(key).isNotNull();
 	}
 
-	@Test(timeout = TIMEOUT_FOR_PREVENTION_OF_DEADLOCK)
+	@Test
+	@Timeout(value = TIMEOUT_FOR_PREVENTION_OF_DEADLOCK, unit = TimeUnit.MILLISECONDS)
 	public void testConcurrency() {
 		// Arrange
 		XMutexFactoryImpl<UUID> mutexFactory = new XMutexFactoryImpl<>();
@@ -202,8 +204,8 @@ public class XMutexFactoryImplTest {
 		}
 	}
 
-
-	@Test(timeout = TIMEOUT_FOR_PREVENTION_OF_DEADLOCK)
+	@Test
+	@Timeout(value = TIMEOUT_FOR_PREVENTION_OF_DEADLOCK, unit = TimeUnit.MILLISECONDS)
 	public void testWithCustomConcurrencySettingsWeakAndLevel() {
 		// Arrange
 		XMutexFactoryImpl<UUID> mutexFactory =

@@ -1,0 +1,31 @@
+name: Build
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+#       checkout
+      - uses: actions/checkout@v3
+      - name: set up JDK 8
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 8
+
+#       build project and run all tests & checks
+      - name: Maven Verify
+        run: mvn -B clean verify
+
+#       Upload code coverage report to Codecov
+      - name: Test Coverage
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

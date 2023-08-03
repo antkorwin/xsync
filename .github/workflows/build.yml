@@ -11,14 +11,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        version: [8, 11, 17, 20]
     steps:
 #       checkout
       - uses: actions/checkout@v3
-      - name: set up JDK 8
+      - name: set up JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 8
+          java-version: ${{ matrix.version }}
 
 #       build project and run all tests & checks
       - name: Maven Verify

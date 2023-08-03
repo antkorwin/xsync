@@ -326,14 +326,14 @@ public class MultiKeysXSyncTest {
 		try {
 			xsync.evaluate(Arrays.asList(123L), () -> {
 				// nop
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException();
 			});
 		} catch (Exception e) {
 			exception = e;
 		}
 
 		assertThat(exception).isNotNull();
-		assertThat(exception.getClass()).isEqualTo(NotImplementedException.class);
+		assertThat(exception.getClass()).isEqualTo(UnsupportedOperationException.class);
 	}
 
 
